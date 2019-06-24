@@ -14,7 +14,7 @@ exports.up = function(knex, Promise) {
       articlesTable.string('body').notNullable();
       articlesTable.integer('votes').defaultTo(0);
       articlesTable.string('topic').references('topics.slug');
-      articlesTable.string('author').references('users.user_id');
+      articlesTable.integer('author').references('users.user_id');
       articlesTable.datetime('created_at').notNullable().defaultTo(knex.fn.now());    
   })
 };

@@ -11,10 +11,10 @@ exports.up = function(knex, Promise) {
     console.log('creating comments table...');
     return knex.schema.createTable('comments', (commentsTable) => {
     commentsTable.increments('comment_id').primary();
-    commentsTable.string('author').references('users.user_id');
-    commentsTable.string('article_id').references('articles.article_id');
+    commentsTable.integer('author').references('users.user_id');
+    commentsTable.integer('article_id').references('articles.article_id');
     commentsTable.integer('votes').notNullable().defaultsTo(0);
-    commentsTable.datetime('created_at').notNullable.defaultsTo(knex.fn.now());
+    commentsTable.datetime('created_at').notNullable().defaultsTo(knex.fn.now());
     commentsTable.string('body').notNullable()
     })
   
