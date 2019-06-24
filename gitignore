@@ -1,0 +1,31 @@
+const ENV = process.env.NODE_ENV || 'development';
+
+const baseConfig = {
+  client: 'pg',
+  migrations: {
+    directory: './db/migrations'
+  },
+  seeds: {
+    directory: './db/seeds'
+  }
+};
+
+const customConfig = {
+  development: {
+    connection: {
+      database: 'nc_news'
+      username: ian
+      password: passql
+    }
+  },
+  test: {
+    connection: {
+      database: 'nc_news_test'
+      username: ian
+      password: passql
+    }
+  }
+};
+
+module.exports = { ...customConfig[ENV], ...baseConfig };
+
