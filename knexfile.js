@@ -1,3 +1,5 @@
+const { config } = require('./config')
+
 const ENV = process.env.NODE_ENV || 'development';
 
 const baseConfig = {
