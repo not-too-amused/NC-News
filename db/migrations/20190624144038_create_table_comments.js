@@ -15,7 +15,7 @@ exports.up = function(knex, Promise) {
     commentsTable.integer('article_id').references('articles.article_id');
     commentsTable.integer('votes').notNullable().defaultsTo(0);
     commentsTable.datetime('created_at').notNullable().defaultsTo(knex.fn.now());
-    commentsTable.string('body').notNullable()
+    commentsTable.string('body', 5000).notNullable()
     })
   
 };
