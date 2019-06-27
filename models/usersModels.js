@@ -6,8 +6,6 @@ exports.fetchUsers = ({username}) => {
 .from('users')
 .where('username', username)
 .then(username => {
-    console.log(username[0])
-
     return username[0]
 })
 }

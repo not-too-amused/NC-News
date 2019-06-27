@@ -23,7 +23,7 @@ describe('./topics', () => {
         });
     })
 })
-describe.only('./users/:username', () => {
+describe('./users/:username', () => {
     describe('GET', () => {
         it('GETS an object by username', () => {
             return request
@@ -41,5 +41,30 @@ describe.only('./users/:username', () => {
             })          
         })
     })
+});
+describe.only('./articles/:article_id', () => {
+    describe('GET', () => {
+        it('GETS an article object by article_id', () => {
+            return request
+            .get('/api/articles/1')
+            .expect(200)
+            .then(({body: {articles}}) => {
+                console.log(articles)
+                expect(articles).to.eql(
+                    { article_id: 1,
+                        title: 'Living in the shadow of a great man',
+                        body: 'I find this existence challenging',
+                        votes: 100,
+                        topic: 'mitch',
+                        author: 'butter_bridge',
+                        created_at: '2018-11-15T12:21:54.171Z' 
+                        //comment_count: int
+                    }
+                )
+            })
+
+        })
+    })
+    
 });
 })
