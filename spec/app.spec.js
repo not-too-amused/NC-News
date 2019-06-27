@@ -42,14 +42,13 @@ describe('./users/:username', () => {
         })
     })
 });
-describe.only('./articles/:article_id', () => {
+describe('./articles/:article_id', () => {
     describe('GET', () => {
         it('GETS an article object by article_id', () => {
             return request
             .get('/api/articles/1')
             .expect(200)
             .then(({body: {articles}}) => {
-                console.log(articles)
                 expect(articles).to.eql(
                     { article_id: 1,
                         title: 'Living in the shadow of a great man',
@@ -58,13 +57,35 @@ describe.only('./articles/:article_id', () => {
                         topic: 'mitch',
                         author: 'butter_bridge',
                         created_at: '2018-11-15T12:21:54.171Z',
-                        comment_count: '13'  // <<< Is this OK as a string??
+                        comment_count: '13'  // <<< Is this OK as a string because, sql??
                     }
                 )
             })
 
         })
     })
+    describe.only('PATCH', () => {
+        it('updates the value of votes by the specified amount', () => {
+            return request
+            .patch('/api/articles/1')
+            .send({ inc_votes: 20})
+            .expect(202)
+            .then(({body: {articles}}) => {
+                console.log(articles)
+                expect(articles).to.eql(
+                    { article_id: 1,
+                        title: 'Living in the shadow of a great man',
+                        body: 'I find this existence challenging',
+                        votes: 120,
+                        topic: 'mitch',
+                        author: 'butter_bridge',
+                        created_at: '2018-11-15T12:21:54.171Z'
+                    }   
+                )
+            })
+        });
+        
+    });
     
 });
 })
