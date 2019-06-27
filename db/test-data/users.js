@@ -21,6 +21,3 @@ module.exports = [
       'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
   },
 ];
-
-// -- ERROR: invalid input syntax for integer: "butter_bridge" --
-// -- not an integer!!

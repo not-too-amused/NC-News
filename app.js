@@ -1,5 +1,6 @@
+process.env.NODE_ENV = 'test'
 const express = require('express')
-const apiRouter = require('./routers/apiRouter')   // <<<<<<<<<<<<<<<<<< 
+const apiRouter = require('./routers/apiRouter')
 const app = express()
 // const {  } = require('./errors/')
 
