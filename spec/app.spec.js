@@ -57,8 +57,8 @@ describe.only('./articles/:article_id', () => {
                         votes: 100,
                         topic: 'mitch',
                         author: 'butter_bridge',
-                        created_at: '2018-11-15T12:21:54.171Z' 
-                        //comment_count: int
+                        created_at: '2018-11-15T12:21:54.171Z',
+                        comment_count: '13'  // <<< Is this OK as a string??
                     }
                 )
             })
