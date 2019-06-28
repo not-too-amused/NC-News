@@ -42,6 +42,33 @@ describe('./users/:username', () => {
         })
     })
 });
+describe('./articles', () => {
+    describe('GET', () => {
+        it('GETS all articles, accepting sort and filter queries', () => {
+            return request
+            .get('/api/articles?author=rogersop&topic=cats')
+            .expect(200)
+            .then(({body: {articles}}) => {
+                // console.log(articles)
+                expect(articles).to.eql(
+                    [
+                        {   article_id: 5,
+                            author: 'rogersop',
+                            body: 'Bastet walks amongst us, and the cats are taking arms!',
+                            comment_count: "2",
+                            created_at: "2002-11-19T12:21:54.171Z",
+                            title: 'UNCOVERED: catspiracy to bring down democracy',
+                            topic: 'cats',
+                            votes: 0           
+                        }
+                    ] 
+
+                )
+            }) 
+        });
+    })
+})
+
 describe('./articles/:article_id', () => {
     describe('GET', () => {
         it('GETS an article object by article_id', () => {
@@ -57,21 +84,21 @@ describe('./articles/:article_id', () => {
                         topic: 'mitch',
                         author: 'butter_bridge',
                         created_at: '2018-11-15T12:21:54.171Z',
-                        comment_count: '13'  // <<< Is this OK as a string because, sql??
+                        comment_count: '13'
                     }
                 )
             })
 
         })
     })
-    describe.only('PATCH', () => {
-        it('updates the value of votes by the specified amount', () => {
+
+    describe('PATCH', () => { 
+        it.only('updates the value of votes by the specified amount', () => {
             return request
             .patch('/api/articles/1')
             .send({ inc_votes: 20})
             .expect(202)
             .then(({body: {articles}}) => {
-                console.log(articles)
                 expect(articles).to.eql(
                     { article_id: 1,
                         title: 'Living in the shadow of a great man',
@@ -86,6 +113,26 @@ describe('./articles/:article_id', () => {
         });
         
     });
-    
-});
+    describe('POST', () => {
+        it('takes an object of username and comment and responds with the posted comment', () => {
+            return request
+            .post('/api/articles/1/comments/')
+            .send({
+                username: 'test_user',
+                body: 'test post'})
+            .expect(201)
+            // .then() => {
+            //     expect().to.eql(
+            //         {   body: 'test post',
+            //             belongs_to: 'Living in the shadow of a great man',
+            //             created_by: 'test_user',
+            //             votes: 100,
+            //             created_at: 1479818163389,
+            //           }
+            //     )
+            // }
+            })
+        });
+        
+    });
 })

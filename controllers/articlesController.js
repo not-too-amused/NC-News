@@ -1,7 +1,7 @@
-const { fetchArticles, updateArticles } = require('../models/articlesModels')
+const { fetchArticles, updateArticles, createComment } = require('../models/articlesModels')
 
 exports.getArticles = (req, res, next) => {
-    fetchArticles(req.params)
+    fetchArticles(req.params, req.query)
     .then((articles) => {
         res.status(200).send({articles})
     })
@@ -14,3 +14,13 @@ exports.patchArticles = (req, res, next) => {
     })
     .catch(console.log)
 }
+exports.postComment = (req, res, next) => {
+    createComment(req)
+    .then( (comment) => {
+        res.status(201).send(comment)
+    })
+    .catch(console.log)
+}
+
+
+//  PLURALISATION ISSUES TO FIX
