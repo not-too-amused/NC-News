@@ -25,23 +25,17 @@ exports.fetchArticles = ({article_id}, {author, topic}) => {
     )
     
 }
-exports.updateArticles = ({body, params: {article_id}}) => {
-    console.log(body, '<<<<< B.ODDIE')
+exports.updateArticles = ({body: {inc_votes=0}, params: {article_id}}) => {
     return connection
-        .select('*')
         .from('articles')
-        // .increment('votes', )
-        //.update({'artciles.votes': votes+body.inc_votes})  **INCREMENT
-        .modify(query => {
-            if (article_id) query.where({ 'articles.article_id': article_id})
-        })
-        
-        .then(article_id => {
-        return article_id[0]
+        .where({'articles.article_id': article_id})
+        .increment('votes', inc_votes)
+        .returning('*')
+        .then(updatedArticle => {
+            return updatedArticle[0]
     })
 }
 exports.createComment = ({body, params: {article_id}}) => {
-    console.log(body, '<<<<< POST COMMENTS')
     return connection
         .select('*')
         .from('articles')

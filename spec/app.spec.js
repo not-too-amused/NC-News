@@ -92,8 +92,8 @@ describe('./articles/:article_id', () => {
         })
     })
 
-    describe('PATCH', () => { 
-        it.only('updates the value of votes by the specified amount', () => {
+    describe('PATCH', () => {               /////// RETURNING ARTICLE ID !!! ????? //////
+        it('updates the value of votes by the specified amount', () => {
             return request
             .patch('/api/articles/1')
             .send({ inc_votes: 20})
@@ -135,4 +135,16 @@ describe('./articles/:article_id', () => {
         });
         
     });
+describe('./comments/:comment_id', () => {
+    describe('DELETE', () => {
+        it('DELETES a comment by id', () => {
+            return request
+            .delete('/api/comments/1')
+            .expect(204)
+            })
+        });
+        
+    
+    
+});    
 })
