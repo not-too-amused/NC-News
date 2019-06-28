@@ -1,8 +1,12 @@
 process.env.NODE_ENV = 'test'
-const { expect } = require('chai');
+const chai = require('chai');
+const {expect} = chai;
+const chaiSorted = require("chai-sorted")
 const app = require('../app');
 const request = require('supertest')(app)
 const { connection } = require('../connection')
+
+chai.use(chaiSorted)
 
 describe('./api/',  () => {
 beforeEach(() => {
@@ -44,7 +48,7 @@ describe('./users/:username', () => {
 });
 describe('./articles', () => {
     describe('GET', () => {
-        it('GETS all articles, accepting sort and filter queries', () => {
+        it('GETS all articles, and filters articles based on queries', () => {
             return request
             .get('/api/articles?author=rogersop&topic=cats')
             .expect(200)
@@ -66,6 +70,15 @@ describe('./articles', () => {
                 )
             }) 
         });
+        it('GETS articles, sorted by selected column', () => {
+            return request
+            .get('/api/articles?sort_by=votes')
+            .expect(200)
+            .then( ({body: {articles}}) => {
+                expect(articles).to.be.sorted('votes', {descending: true}) 
+            }
+            )
+        })
     })
 })
 
@@ -92,7 +105,7 @@ describe('./articles/:article_id', () => {
         })
     })
 
-    describe('PATCH', () => {               /////// RETURNING ARTICLE ID !!! ????? //////
+    describe('PATCH', () => {
         it('updates the value of votes by the specified amount', () => {
             return request
             .patch('/api/articles/1')
