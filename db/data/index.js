@@ -1,0 +1,1 @@
+const data = { test, development, production: devData };
