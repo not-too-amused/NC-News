@@ -29,3 +29,9 @@ for (let i = 0; i < comments.length; i++) {
 }
     return formattedComments
 };
+
+exports.makeComment = ({ username, ...object }, article_id) => ({
+    author: username,
+    article_id,
+    ...object
+  });

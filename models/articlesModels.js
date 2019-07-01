@@ -1,4 +1,5 @@
 const { connection } = require('../connection')
+const { makeComment} = require('../db/utils/utils')
 
 exports.fetchArticles = ({article_id}, {author, topic, sort_by, order}) => {
     return connection
@@ -32,14 +33,30 @@ exports.updateArticles = ({body: {inc_votes=0}, params: {article_id}}) => {
             return updatedArticle[0]
     })
 }
-exports.createComment = ({body, params: {article_id}}) => {
+exports.fetchComments = ({article_id}, {sort_by, order}) => {
     return connection
+    .select('*')
+    .from('articles')
+    .where({article_id})
+    .then( () => {
+        return connection
         .select('*')
-        .from('articles')
-        .modify(query => {
-            if (article_id) query.where({ 'articles.article_id': article_id})
-        })
-    .then(article_id => {
-        return article_id[0]
-})    
+        .from('comments')
+        .orderBy( sort_by || 'comments.created_at', order || 'desc')
+        .where({article_id})
+        // .then(sortedComments => {
+        //     return sortedComments
+        // })
+    })
+}
+
+
+
+exports.createComment = (comment, {article_id}) => {
+    const createdComment = makeComment(comment, article_id)
+    return connection
+        .from('comments')
+        .insert(createdComment)
+        .returning('*')
+        .catch(console.log)
 } 

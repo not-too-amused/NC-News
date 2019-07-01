@@ -53,7 +53,6 @@ describe('./articles', () => {
             .get('/api/articles?author=rogersop&topic=cats')
             .expect(200)
             .then(({body: {articles}}) => {
-                // console.log(articles)
                 expect(articles).to.eql(
                     [
                         {   article_id: 5,
@@ -104,7 +103,6 @@ describe('./articles/:article_id', () => {
 
         })
     })
-
     describe('PATCH', () => {
         it('updates the value of votes by the specified amount', () => {
             return request
@@ -127,27 +125,75 @@ describe('./articles/:article_id', () => {
         
     });
     describe('POST', () => {
-        it('takes an object of username and comment and responds with the posted comment', () => {
+        xit('takes an object of username and comment and responds with the posted comment', () => {
             return request
             .post('/api/articles/1/comments/')
             .send({
-                username: 'test_user',
+                username: 'icellusedkars',
                 body: 'test post'})
             .expect(201)
-            // .then() => {
-            //     expect().to.eql(
-            //         {   body: 'test post',
-            //             belongs_to: 'Living in the shadow of a great man',
-            //             created_by: 'test_user',
-            //             votes: 100,
-            //             created_at: 1479818163389,
-            //           }
-            //     )
-            // }
-            })
+            .then( ({comments}) => {
+                console.log(comments)
+                // expect(comments).to.equal(0); VOTES!
+                expect(comments).to.include.keys(
+                    'comment_id',
+                    'author',
+                    'article_id'
+                )
+                //// MOVE THIS INTO BELOW DESCRIBE BLOCK
+            
+            });
         });
         
     });
+});  
+describe('./articles/:article_id/comments', () => {
+    describe('GET', () => {
+        it('GETS an array of comments for the given article ID', () => {
+            return request
+            .get('/api/articles/1/comments')
+            .expect(200)
+            .then( ({body}) => {
+                expect(body.length).to.equal(13);
+                expect(body[0]).to.include.keys(
+                    'comment_id',
+                    'author',
+                    'article_id',
+                    'votes',
+                    'body' 
+                )
+            })
+        });
+        it('accepts queries to sort ascending/descending by column', () => {
+            return request
+            .get('/api/articles/1/comments?sort_by=comment_id&order=desc')
+            .expect(200)
+            .then( ({body}) => {
+                expect(body).to.be.sortedBy("comment_id", { descending: true });
+            })
+        })
+        it('default sorts created_at/descending if no query passed', () => {
+            return request
+            .get('/api/articles/1/comments')
+            .expect(200)
+            .then( ({body}) => {
+                expect(body).to.be.sortedBy("created_at", { descending: true });
+            })
+        });
+    })
+    describe('PATCH', () => {
+        it('updates the value of votes by the specified amount', () => {
+            return request
+            .patch('/api/comments/1')
+            .send({ inc_votes: 1})
+            .expect(202)
+            .then(({body: {comments_id}}) => {
+                expect(comments_id[0].votes).to.eql(17)
+            })    
+        })    
+    });
+});
+
 describe('./comments/:comment_id', () => {
     describe('DELETE', () => {
         it('DELETES a comment by id', () => {
@@ -156,8 +202,5 @@ describe('./comments/:comment_id', () => {
             .expect(204)
             })
         });
-        
-    
-    
-});    
-})
+    });
+});
