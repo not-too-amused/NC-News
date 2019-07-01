@@ -124,28 +124,7 @@ describe('./articles/:article_id', () => {
         });
         
     });
-    describe('POST', () => {
-        xit('takes an object of username and comment and responds with the posted comment', () => {
-            return request
-            .post('/api/articles/1/comments/')
-            .send({
-                username: 'icellusedkars',
-                body: 'test post'})
-            .expect(201)
-            .then( ({comments}) => {
-                console.log(comments)
-                // expect(comments).to.equal(0); VOTES!
-                expect(comments).to.include.keys(
-                    'comment_id',
-                    'author',
-                    'article_id'
-                )
-                //// MOVE THIS INTO BELOW DESCRIBE BLOCK
-            
-            });
-        });
-        
-    });
+    
 });  
 describe('./articles/:article_id/comments', () => {
     describe('GET', () => {
@@ -191,6 +170,25 @@ describe('./articles/:article_id/comments', () => {
                 expect(comments_id[0].votes).to.eql(17)
             })    
         })    
+    });
+    describe('POST', () => {
+        it('takes an object of username and comment and responds with the posted comment', () => {
+            return request
+            .post('/api/articles/1/comments/')
+            .send({
+                username: 'icellusedkars',
+                body: 'test post'})
+            .expect(201)
+            .then( ({body}) => {
+                expect(body[0].votes).to.equal(0);
+                expect(body[0]).to.include.keys(
+                    'comment_id',
+                    'author',
+                    'article_id'
+                )
+            });
+        });
+        
     });
 });
 

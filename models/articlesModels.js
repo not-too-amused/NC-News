@@ -44,16 +44,13 @@ exports.fetchComments = ({article_id}, {sort_by, order}) => {
         .from('comments')
         .orderBy( sort_by || 'comments.created_at', order || 'desc')
         .where({article_id})
-        // .then(sortedComments => {
-        //     return sortedComments
-        // })
     })
 }
 
 
 
-exports.createComment = (comment, {article_id}) => {
-    const createdComment = makeComment(comment, article_id)
+exports.createComment = (comments, {article_id}) => {
+    const createdComment = makeComment(comments, article_id)
     return connection
         .from('comments')
         .insert(createdComment)
