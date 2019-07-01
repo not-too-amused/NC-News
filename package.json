@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "bc-nc-news",
   "main": "index.js",
-  "start": "node listen.js",
   "scripts": {
+    "start": "node listen.js",
     "test-db": "psql -f ./test.sql",
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed": "knex seed:run",
