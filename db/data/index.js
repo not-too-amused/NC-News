@@ -1,1 +1,1 @@
-const data = { test, development, production: devData };
+const data = { test, development, production: development };
