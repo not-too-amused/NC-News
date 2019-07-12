@@ -1,3 +1,9 @@
 exports.catch404s = (err, req, res, next) => {
-    next({code: 404, msg:'This page does not exist'})
+    console.log(res, '<<< RES <<<')
+    next({code: 404, msg:'Not Found'})
 }
+
+
+// res:
+//       IncomingMessage {
+//         statusMessage: 'Not Found',

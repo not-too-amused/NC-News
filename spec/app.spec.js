@@ -15,6 +15,13 @@ describe('./api/',  () => {
     after( ()=> {
         connection.destroy()
     })
+    it.only('handles bad requests and returns 404', () => {
+        return request.get('/api/badendpoint').expect(404)
+            .then( ( body )=> {
+                console.log(body, '<BODY')
+                expect(msg).to.equal('Page not found')
+            })
+    })
     
 describe('./topics', () => {
     describe('GET', () => {
