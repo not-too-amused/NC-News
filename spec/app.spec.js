@@ -4,17 +4,18 @@ const {expect} = chai;
 const chaiSorted = require("chai-sorted")
 const app = require('../app');
 const request = require('supertest')(app)
-const { connection } = require('../connection')
+const {connection} = require('../connection')
 
 chai.use(chaiSorted)
 
 describe('./api/',  () => {
-beforeEach(() => {
-    return connection.seed.run()
-});
+    beforeEach(() => {
+        return connection.seed.run()
+    });
     after( ()=> {
         connection.destroy()
     })
+    
 describe('./topics', () => {
     describe('GET', () => {
         it('GETS an array of topics', () => {
