@@ -15,11 +15,10 @@ describe('./api/',  () => {
     after( ()=> {
         connection.destroy()
     })
-    it.only('handles bad requests and returns 404', () => {
-        return request.get('/api/badendpoint').expect(404)
-            .then( ( body )=> {
-                console.log(body, '<BODY')
-                expect(msg).to.equal('Page not found')
+    it('handles bad requests and returns 404', () => {
+        return request.get('/badendpoint').expect(404)
+            .then( ( {res} )=> {
+                expect(res.text).to.equal('Route not found')
             })
     })
     
@@ -30,7 +29,7 @@ describe('./topics', () => {
             .get('/api/topics')
             .expect(200)
             .then(({body:{topics}}) => {
-               expect(topics[0]).to.include.keys('description', 'slug')
+            expect(topics[0]).to.include.keys('description', 'slug')
             })
         });
     })
@@ -47,8 +46,8 @@ describe('./users/:username', () => {
                         username: 'lurker',
                         name: 'do_nothing',
                         avatar_url:
-                          'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
-                      }
+                        'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+                    }
                     )
             })          
         })
@@ -110,6 +109,14 @@ describe('./articles/:article_id', () => {
             })
 
         })
+        it("GETS ERROR status 400 when given an invalid article_id", () => {
+            return request
+            .get("/api/articles/badId")
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).to.equal("Bad Request");
+            });
+        });
     })
     describe('PATCH', () => {
         it('updates the value of votes by the specified amount', () => {
@@ -130,6 +137,12 @@ describe('./articles/:article_id', () => {
                 )
             })
         });
+        it.only('returns ERROR status 400 on bad PATCH request', () => {
+            return request
+            .patch('/api/articles/badId')
+            .send({ inc_votes: 20})
+            .expect(400)
+        } )
         
     });
     

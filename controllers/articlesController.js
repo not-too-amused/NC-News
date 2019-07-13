@@ -2,32 +2,30 @@ const { fetchArticles, updateArticles, fetchComments, createComment } = require(
 
 exports.getArticles = (req, res, next) => {
     fetchArticles(req.params, req.query)
-    .then((articles) => {
+    .then( articles => {
         res.status(200).send({articles})
     })
-    .catch(console.log)
+    .catch(next)
 }
 exports.patchArticles = (req, res, next) => {
     updateArticles(req)
-        .then((articles) => {
+        .then( articles  => {
             res.status(202).send({articles})
         })
-    .catch(console.log)
+    .catch(next)
 }
 exports.getComments = (req, res, next) => {
     fetchComments(req.params, req.query)
     .then( (params) => res.status(200).send(params)
     )
-.catch(console.log)
+.catch(next)
 }
     
 
 exports.postComment = (req, res, next) => {
     createComment(req.body, req.params)
-        .then(comments => {
-            // console.log('return this<<!!', comments)
-            
+        .then( comments => {
             res.status(201).send(comments)
         })
-    .catch(console.log)
+    .catch(next)
 }

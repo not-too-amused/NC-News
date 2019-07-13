@@ -5,4 +5,4 @@ const dbConfig =
         ? { client: 'pg', connection: process.env.DATABASE_URL }
         : require('./knexfile.js');
 
-module.exports = knex(dbConfig);
+exports.connection = knex(dbConfig);

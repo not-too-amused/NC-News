@@ -5,5 +5,5 @@ exports.getUsers = (req, res, next) => {
     .then((users) => {
         res.status(200).send({users})
     })
-    .catch(console.log)
+    .catch(next)
 }

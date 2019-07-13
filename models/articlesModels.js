@@ -55,5 +55,7 @@ exports.createComment = (comments, {article_id}) => {
         .from('comments')
         .insert(createdComment)
         .returning('*')
-        .catch(console.log)
+        .catch((err) => {
+            return Promise.reject(err)
+        })
 } 

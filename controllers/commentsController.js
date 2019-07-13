@@ -5,12 +5,12 @@ exports.deleteComments = (req, res, next) => {
     .then( (comment) => {
         res.status(204).send({comment})
     })
-    .catch(console.log)
+    .catch(next)
 }
 exports.patchComments = (req, res, next) => {
     updateComment(req.body, req.params)
         .then( (comments_id) => {
             res.status(202).send({comments_id})
         })
-    .catch(console.log)
+    .catch(next)
 }
