@@ -21,7 +21,13 @@ describe('./api/',  () => {
                 expect(res.text).to.equal('Route not found')
             })
     })
-    
+    xit('responds with status 405 if an unwanted method is attempted', () => {
+        return request.patch('/api').expect(405)
+            // .then(({ body: { msg } }) => {
+            //     expect(msg).to.equal('Method not allowed');
+            // });
+            //! CURRENTLY RETURNING 404 NOT FOUND ON API ROUTE.
+    })
 describe('./topics', () => {
     describe('GET', () => {
         it('GETS an array of topics', () => {
@@ -32,6 +38,9 @@ describe('./topics', () => {
             expect(topics[0]).to.include.keys('description', 'slug')
             })
         });
+        it('responds with status 405 if an unwanted method is attempted', () => {
+            return request.patch('/api/topics').expect(405)
+        })    
     })
 })
 describe('./users/:username', () => {
@@ -51,6 +60,9 @@ describe('./users/:username', () => {
                     )
             })          
         })
+        it('responds with status 405 if an unwanted method is attempted', () => {
+            return request.patch('/api/users/testuser').expect(405)
+        })    
     })
 });
 describe('./articles', () => {
@@ -85,6 +97,9 @@ describe('./articles', () => {
             }
             )
         })
+        it('responds with status 405 if an unwanted method is attempted', () => {
+            return request.delete('/api/articles').expect(405)
+        })    
     })
 })
 
@@ -107,14 +122,13 @@ describe('./articles/:article_id', () => {
                     }
                 )
             })
-
         })
-        it("GETS ERROR status 400 when given an invalid article_id", () => {
+        it('GETS ERROR status 400 when given an invalid article_id', () => {
             return request
-            .get("/api/articles/badId")
+            .get('/api/articles/badId')
             .expect(400)
             .then(({ body: { msg } }) => {
-                expect(msg).to.equal("Bad Request");
+                expect(msg).to.equal('Bad Request');
             });
         });
     })
@@ -137,12 +151,15 @@ describe('./articles/:article_id', () => {
                 )
             })
         });
-        it.only('returns ERROR status 400 on bad PATCH request', () => {
+        it('returns ERROR status 400 on bad PATCH request', () => {
             return request
             .patch('/api/articles/badId')
             .send({ inc_votes: 20})
             .expect(400)
-        } )
+        })
+        it('responds with status 405 if an unwanted method is attempted', () => {
+            return request.delete('/api/articles/1').expect(405)
+        })    
         
     });
     
@@ -209,7 +226,6 @@ describe('./articles/:article_id/comments', () => {
                 )
             });
         });
-        
     });
 });
 
@@ -221,5 +237,8 @@ describe('./comments/:comment_id', () => {
             .expect(204)
             })
         });
+        it('responds with status 405 if an unwanted method is attempted', () => {
+            return request.post('/api/comments/1').expect(405)
+        })    
     });
 });
